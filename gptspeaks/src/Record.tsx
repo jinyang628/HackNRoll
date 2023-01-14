@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 function Record() {
   const [isRecording, setIsRecording] = useState(false);
+  // const [isWaiting, setIsWaiting] = useState(false);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string>("");
   // const [fileName, setFileName] = useState("recording.wav")
 
 
@@ -15,10 +16,25 @@ function Record() {
     } else {
       stopRecording();
     }
+
+    // if (isWaiting)
   }, [isRecording]);
 
   const handleClick = () => {
     setIsRecording(!isRecording);
+  }
+
+  function sendAudio(audioUrl: string) {
+    const formData = new FormData();
+    formData.append("audio_file", audioUrl);
+    fetch('/voice_input', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   const startRecording = () => {
@@ -40,8 +56,10 @@ function Record() {
       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
       setAudioUrl(URL.createObjectURL(audioBlob));
       //audioURL contains the wav file//
+      sendAudio(audioUrl);
       setStream(null);
       setMediaRecorder(null);
+      // setIsWaiting(true);
     }
   }
 
