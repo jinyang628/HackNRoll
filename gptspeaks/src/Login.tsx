@@ -7,21 +7,25 @@ function Login() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  const data = {
-    "username": username,
-    "email": email,
-    "password": password
-  };
+  
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    axios.post('http://127.0.0.1:8000/register', data)
-    .then((response: any) =>{
-      console.log(response);
+
+    const data = {
+      "username": username,
+      "email": email,
+      "details":"",
+      "password": password,
+    };
+    fetch('http://127.0.0.1:8000/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     })
-    .catch((error: any) => {
-      console.log(error);
-    });
+    .then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
   };
 
   return (

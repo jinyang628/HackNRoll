@@ -1,8 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import sqlite3
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # create a connection to the SQLite database
 conn = sqlite3.connect("users.db")
