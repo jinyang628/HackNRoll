@@ -5,6 +5,8 @@ import Title from './FrontPage/Title';
 import Login from './FrontPage/Login';
 import Record from './RecordPage/Record';
 import NavBar from './Common/NavBar';
+import Details from './RecordPage/Details';
+import BrowserRouter from {};
 import PlayWAV from './PlayWAV';
 import Details from './RecordPage/Details';
 import BrowserRouter from {}
@@ -26,7 +28,6 @@ function App() {
       <Login changeDetails={changeDetails}/>
       <Details changeDetails={changeDetails} getDetails={getDetails}/>
       <Record/>
-      <PlayWAV/>
     </div>
   );
 }
