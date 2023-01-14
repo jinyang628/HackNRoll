@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from 'react';
 
 function Record() {
-  const [isRecording, setIsRecording] = useState(false);
+  const [isRecording, setIsRecording] = useState<boolean | null>(null);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  // const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  // const [fileName, setFileName] = useState("recording.wav");
+  const [downloadLink, setDownloadLink] = useState<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
-    if (isRecording) {
-      startRecording();
-    } else {
-      stopRecording();
+    if (isRecording !== null){
+      if (isRecording) {
+        startRecording();
+      } else {
+        stopRecording();
+      }
     }
   }, [isRecording]);
 
   const handleClick = () => {
-    setIsRecording(!isRecording);
+    setIsRecording(prev => !prev);
   }
 
+  const downloadAudio = (audioUrl: string) => {
+    if (downloadLink) {
+      document.body.removeChild(downloadLink);
+      setDownloadLink(null);
+    }
+    const newDownloadLink = document.createElement("a");
+    newDownloadLink.href = audioUrl;
+    newDownloadLink.download = "recording.wav";
+    newDownloadLink.innerHTML = "Download Recording";
+    setDownloadLink(newDownloadLink);
+    document.body.appendChild(newDownloadLink);
+  };
 
   const sendAudio = (audioBlob: string | Blob) => {
     const formData = new FormData();
@@ -34,6 +47,15 @@ function Record() {
     .catch(error => console.error('Error:', error));
   };
 
+  console.log('error arrives here');
+  console.log(audioChunks);
+
+  if(mediaRecorder){
+    mediaRecorder.addEventListener("dataavailable", event => {
+      setAudioChunks(prev => [...prev, event.data]);
+    });
+  }
+  
 
   const startRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -41,52 +63,31 @@ function Record() {
       const mediaRecorder = new MediaRecorder(stream);
       setMediaRecorder(mediaRecorder);
       mediaRecorder.start();
-      mediaRecorder.addEventListener("dataavailable", event => {
-        setAudioChunks(prev => [...prev, event.data]);
-      });
     });
   }
-
 
   const stopRecording = () => {
     if (mediaRecorder && stream) {
       mediaRecorder.stop();
       stream.getTracks().forEach(track => track.stop());
-      if(audioChunks.length > 0) {
-        const audioBlob = new Blob([audioChunks[audioChunks.length-1]], { type: 'audio/wav' });
-        sendAudio(audioBlob);
-      }
+      const audioBlob = new Blob([audioChunks[audioChunks.length-1]], { type: 'audio/wav' });
+      sendAudio(audioBlob);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      console.log(audioChunks);
+      console.log('help me');
+      console.log(mediaRecorder);
+      console.log('check media');
+      downloadAudio(audioUrl);
       setAudioChunks([]);
       setStream(null);
       setMediaRecorder(null);
     }
   }
 
-  
-  // const stopRecording = () => {
-  //   if (mediaRecorder && stream) {
-  //     mediaRecorder.stop();
-  //     stream.getTracks().forEach(track => track.stop());
-  //     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-  //     sendAudio(audioBlob);
-  //     setAudioChunks([]);
-  //     setStream(null);
-  //     setMediaRecorder(null);
-  //     const audioUrl = URL.createObjectURL(audioBlob);
-  //     const downloadLink = document.createElement("a");
-  //     downloadLink.href = audioUrl;
-  //     downloadLink.download = "recording.wav";
-  //     downloadLink.innerHTML = "Download Recording";
-  //     document.body.appendChild(downloadLink);
-  //     downloadLink.click();
-  //     document.body.removeChild(downloadLink);
-  //   }
-
   return (
     <div className="recordContainer">
       <h2 className="recordPrompt">Press the button below to start recording </h2>
       <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}>
-      <div id="redDot"></div>REC
       </button>
     </div>
   );
