@@ -52,6 +52,7 @@ function Record() {
       stream.getTracks().forEach(track => track.stop());
       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
       sendAudio(audioBlob);
+      setAudioChunks([]);
       setStream(null);
       setMediaRecorder(null);
     }
