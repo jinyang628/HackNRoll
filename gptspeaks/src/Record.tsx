@@ -17,7 +17,6 @@ function Record() {
       </button>
       <audio id="recorded-audio"></audio>
     </div>
-    
   );
 }
 
