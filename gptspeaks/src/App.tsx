@@ -5,6 +5,7 @@ import Title from './FrontPage/Title';
 import Login from './FrontPage/Login';
 import Record from './RecordPage/Record';
 import NavBar from './Common/NavBar';
+import PlayWAV from './PlayWAV';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Title/>
       <Login/>
       <Record/>
+      <PlayWAV/>
     </div>
   );
 }
