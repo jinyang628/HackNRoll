@@ -22,7 +22,7 @@ function Record() {
 
   const sendAudio = (audioBlob: string | Blob) => {
     const formData = new FormData();
-    formData.append("audio_file", audioBlob);
+    formData.append("audio_file", new File([audioBlob], 'audio.wav', { type: 'audio/wav' }));
     fetch('http://127.0.0.1:8000/voice_input', {
       method: 'POST',
       body: formData
