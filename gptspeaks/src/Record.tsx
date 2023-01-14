@@ -47,27 +47,39 @@ function Record() {
     });
   }
 
+
   const stopRecording = () => {
     if (mediaRecorder && stream) {
       mediaRecorder.stop();
       stream.getTracks().forEach(track => track.stop());
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      sendAudio(audioBlob);
+      if(audioChunks.length > 0) {
+        const audioBlob = new Blob([audioChunks[audioChunks.length-1]], { type: 'audio/wav' });
+        sendAudio(audioBlob);
+      }
       setAudioChunks([]);
       setStream(null);
       setMediaRecorder(null);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const downloadLink = document.createElement("a");
-      downloadLink.href = audioUrl;
-      downloadLink.download = "recording.wav";
-      downloadLink.innerHTML = "Download Recording";
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
     }
   }
-
-
+  
+  // const stopRecording = () => {
+  //   if (mediaRecorder && stream) {
+  //     mediaRecorder.stop();
+  //     stream.getTracks().forEach(track => track.stop());
+  //     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+  //     sendAudio(audioBlob);
+  //     setAudioChunks([]);
+  //     setStream(null);
+  //     setMediaRecorder(null);
+  //     const audioUrl = URL.createObjectURL(audioBlob);
+  //     const downloadLink = document.createElement("a");
+  //     downloadLink.href = audioUrl;
+  //     downloadLink.download = "recording.wav";
+  //     downloadLink.innerHTML = "Download Recording";
+  //     document.body.appendChild(downloadLink);
+  //     downloadLink.click();
+  //     document.body.removeChild(downloadLink);
+  //   }
 
   return (
     <div className="recordContainer">
