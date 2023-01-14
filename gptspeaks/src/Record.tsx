@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 function Record() {
   const [isRecording, setIsRecording] = useState(false);
-  // const [isWaiting, setIsWaiting] = useState(false);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string>("");
-  // const [fileName, setFileName] = useState("recording.wav")
 
 
   useEffect(() => {
@@ -16,26 +13,26 @@ function Record() {
     } else {
       stopRecording();
     }
-
-    // if (isWaiting)
   }, [isRecording]);
 
   const handleClick = () => {
     setIsRecording(!isRecording);
   }
 
-  function sendAudio(audioUrl: string) {
+
+  const sendAudio = (audioBlob: string | Blob) => {
     const formData = new FormData();
-    formData.append("audio_file", audioUrl);
-    fetch('/voice_input', {
+    formData.append("audio_file", audioBlob);
+    fetch('http://127.0.0.1:8000/voice_input', {
       method: 'POST',
       body: formData
-    }).then(response => {
-      console.log(response);
-    }).catch(error => {
-      console.log(error);
-    });
-  }
+    })
+    .then(res => res.json())
+    // store the response somewhere
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
+  };
+
 
   const startRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -54,12 +51,9 @@ function Record() {
       mediaRecorder.stop();
       stream.getTracks().forEach(track => track.stop());
       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      setAudioUrl(URL.createObjectURL(audioBlob));
-      //audioURL contains the wav file//
-      sendAudio(audioUrl);
+      sendAudio(audioBlob);
       setStream(null);
       setMediaRecorder(null);
-      // setIsWaiting(true);
     }
   }
 
@@ -71,11 +65,6 @@ function Record() {
       <button id="record-button" onClick={handleClick}>
         {isRecording ? 'Stop' : 'Start'}
       </button>
-      {/* {audioUrl && (
-        <a href={audioUrl} download={fileName}>
-          Download recording
-        </a>
-      )} */}
     </div>
   );
 }
