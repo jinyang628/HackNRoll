@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -22,8 +23,10 @@ function Login() {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </label>
       <br />
-      <button type="submit">Log In</button>
-      <button type="button">Register</button>
+      <div>
+      <button className="btn btn-secondary button" type="submit">Log in</button>
+      <button className="btn btn-secondary button" type="button">Register</button>
+      </div>
     </form>
   );
 }
