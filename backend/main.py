@@ -30,11 +30,12 @@ print("running");
 # API endpoint for user login
 @app.get("/login")
 async def login(email: str, password: str):
-    cursor.execute("SELECT user_id, details FROM users WHERE email = ? AND password = ?", (email, password))
+    cursor.execute("SELECT user_id, username, details FROM users WHERE email = ? AND password = ?", (email, password))
     user = cursor.fetchone()
     if user:
         return {"user_id": user[0],
-                "details":user[1]}
+                "username": user[1],
+                "details":user[2]}
     else:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
