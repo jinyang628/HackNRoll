@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from './Images/YongNingFace.jpg'
+import logo from '../Images/YongNingFace.jpg'
 
 function NavBar() {
   return (

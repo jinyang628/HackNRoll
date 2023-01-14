@@ -17,16 +17,14 @@ function Login() {
       "password": password,
     };
 
-    useEffect(() => {
-      fetch('http://127.0.0.1:8000/login?email='+email+'&password='+password, {
-        method: 'GET',
-      })
-      .then(res => res.json())
-      // store the response using useState
-      .then(response => setData(response))
-      .then(response => console.log('Success:', JSON.stringify(response)))
-      .catch(error => console.error('Error:', error));
-    }, []);
+    fetch('http://127.0.0.1:8000/login?email='+email+'&password='+password, {
+      method: 'GET',
+    })
+    .then(res => res.json())
+    // store the response using useState
+    .then(response => setData(response))
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
   };
 
   const handleSubmit2 = (event: { preventDefault: () => void; }) => {
