@@ -45,12 +45,12 @@ function Record() {
       body: formData
     })
     .then(res => res.json())
-    // store the response somewhere
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
   };
 
   const startRecording = () => {
+    console.log("start recording");
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       setStream(stream);
       const mediaRecorder = new MediaRecorder(stream);
@@ -68,12 +68,14 @@ function Record() {
       stream.getTracks().forEach(track => track.stop());
       const audioBlob = new Blob([audioChunks[audioChunks.length-1]], { type: 'audio/wav' });
       sendAudio(audioBlob);
+      console.log(audioChunks);
       const audioUrl = URL.createObjectURL(audioBlob);
       downloadAudio(audioUrl);
       setAudioChunks([]);
       setStream(null);
       setMediaRecorder(null);
     }
+    console.log("stop recording");
   }
 
   return (
