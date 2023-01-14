@@ -9,7 +9,6 @@ function Login() {
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
     const data = {
       "username": username,
       "email": email,
@@ -22,7 +21,6 @@ function Login() {
       body: JSON.stringify(data)
     })
     .then(res => res.json())
-    // store the response somewhere
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
   };
