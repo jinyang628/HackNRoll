@@ -4,10 +4,12 @@ import "./style.css";
 import Title from './Title';
 import Login from './Login';
 import Record from './Record';
+import NavBar from './NavBar';
 
 function App() {
   return (
     <div>
+      <NavBar/>
       <Title/>
       <Login/>
       <Record/>
