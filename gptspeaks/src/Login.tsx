@@ -7,15 +7,17 @@ function Login() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  const data = {
-    "username": username,
-    "email": email,
-    "password": password
-  };
+  
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    axios.post('http://127.0.0.1:8000/register', data)
+    const data = {
+      "username": username,
+      "email": email,
+      "password": password
+    };
+    console.log(data);
+    axios.post('https://127.0.0.1:8000/register', data)
     .then((response: any) =>{
       console.log(response);
     })
