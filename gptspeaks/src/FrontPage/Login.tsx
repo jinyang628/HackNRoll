@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import Details from '../RecordPage/Details';
 
-function Login() {
+function Login(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [response, setData] = useState(null);
+  
 
 
   const handleSubmit1 = (event: { preventDefault: () => void; }) => {
@@ -22,7 +23,7 @@ function Login() {
     })
     .then(res => res.json())
     // store the response using useState
-    .then(response => setData(response))
+    .then(response => props.changeDetails(response))
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
   };
@@ -49,6 +50,7 @@ function Login() {
   };
 
   return (
+    <div>
     <form className="regLogForm">
       <label>
         Username:
@@ -70,6 +72,7 @@ function Login() {
       <button className="btn btn-secondary button" type="submit" onClick={handleSubmit2}>Register</button>
       </div>
     </form>
+    </div>
   );
 }
 
