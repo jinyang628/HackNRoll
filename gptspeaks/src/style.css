@@ -21,7 +21,7 @@ body {
 .line3{
     font-size: 50px;
     font-weight: bold;
-    transform: translateX(50%);
+    transform: translateX(10%);
 }
 
 .recordPrompt{
@@ -47,23 +47,52 @@ body {
     justify-content: center;
 }
 
-#record-button {
-  width: 50px;
-  height: 50px;
-  background-color: red;
-  font-size: 20px;
-  border-radius: 25px; /* half of the width and height to make it a circle */
-  border: none; /* remove the default border */
-  outline: none; /* remove the default outline */
-  cursor: pointer; /* change cursor to pointer */
-  margin: auto;
+#record-button-false{
+    width: 100px;
+    height: 50px;
+    background-color: white;
+    font-size: 20px;
+    border-radius: 20px; /* half of the width and height to make it a circle */
+    border: 2px solid black; /* remove the default border */
+    cursor: pointer; /* change cursor to pointer */
+    margin: auto;
 }
 
-#record-button:active {
-  transform: scale(0.9); /* scale the button down when pressed */
+#record-button-true{
+    color: white;
+    width: 100px;
+    height: 50px;
+    background-color: black;
+    font-size: 20px;
+    border-radius: 20px; /* half of the width and height to make it a circle */
+    border: 2px solid red; /* remove the default border */
+    cursor: pointer; /* change cursor to pointer */
+    margin: auto;
+}
+
+#redDot {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#record-button-true:active {
+    transform: scale(0.9); /* scale the button down when pressed */
+}
+
+#record-button-false:active {
+    transform: scale(0.9);
 }
   
-#record-button:hover {
+#record-button-true:hover {
+    background-color: darkred;
+}
+
+#record-button-false:hover {
     background-color: darkred;
 }
 

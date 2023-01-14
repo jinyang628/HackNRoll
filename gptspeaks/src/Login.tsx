@@ -7,7 +7,24 @@ function Login() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+
+  const handleSubmit1 = (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const data = {
+      "email": email,
+      "password": password,
+    };
+    fetch('http://127.0.0.1:8000/login?email='+email+'&password='+password, {
+      method: 'GET',
+    })
+    .then(res => res.json())
+    // store the response somewhere
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
+  };
+
+  const handleSubmit2 = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
     const data = {
@@ -28,7 +45,7 @@ function Login() {
   };
 
   return (
-    <form className="regLogForm" onSubmit={handleSubmit}>
+    <form className="regLogForm">
       <label>
         Username:
         <input value={username} onChange={(e) => setUsername(e.target.value)} required />
@@ -45,8 +62,8 @@ function Login() {
       </label>
       <br />
       <div>
-      <button className="btn btn-secondary button" type="submit">Log in</button>
-      <button className="btn btn-secondary button" type="button">Register</button>
+      <button className="btn btn-secondary button" type="submit" onClick={handleSubmit1}>Log in</button>
+      <button className="btn btn-secondary button" type="submit" onClick={handleSubmit2}>Register</button>
       </div>
     </form>
   );
