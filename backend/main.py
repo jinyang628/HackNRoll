@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY,
     username TEXT NOT NULL,
     email TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    details TEXT 
 )
 """)
 conn.commit()
@@ -23,21 +24,24 @@ class User(BaseModel):
     username: str
     email: str
     password: str
+    details: str
 
+print("running");
 # API endpoint for user login
 @app.get("/login")
 async def login(email: str, password: str):
-    cursor.execute("SELECT user_id FROM users WHERE email = ? AND password = ?", (email, password))
+    cursor.execute("SELECT user_id, details FROM users WHERE email = ? AND password = ?", (email, password))
     user = cursor.fetchone()
     if user:
-        return {"user_id": user[0]}
+        return {"user_id": user[0],
+                "details":user[1]}
     else:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
 # API endpoint for user registration
 @app.post("/register")
 async def register(user: User):
-    cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", (user.username, user.email, user.password))
+    cursor.execute("INSERT INTO users (username, email, password,details) VALUES (?, ?, ?,?)", (user.username, user.email, user.password,user.details))
     conn.commit()
     return {"user_id": cursor.lastrowid}
 
