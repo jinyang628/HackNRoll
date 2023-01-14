@@ -5,7 +5,8 @@ function Record() {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-
+  // const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  // const [fileName, setFileName] = useState("recording.wav");
 
   useEffect(() => {
     if (isRecording) {
@@ -46,23 +47,45 @@ function Record() {
     });
   }
 
+
   const stopRecording = () => {
     if (mediaRecorder && stream) {
       mediaRecorder.stop();
       stream.getTracks().forEach(track => track.stop());
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      sendAudio(audioBlob);
+      if(audioChunks.length > 0) {
+        const audioBlob = new Blob([audioChunks[audioChunks.length-1]], { type: 'audio/wav' });
+        sendAudio(audioBlob);
+      }
       setAudioChunks([]);
       setStream(null);
       setMediaRecorder(null);
     }
   }
 
+  
+  // const stopRecording = () => {
+  //   if (mediaRecorder && stream) {
+  //     mediaRecorder.stop();
+  //     stream.getTracks().forEach(track => track.stop());
+  //     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+  //     sendAudio(audioBlob);
+  //     setAudioChunks([]);
+  //     setStream(null);
+  //     setMediaRecorder(null);
+  //     const audioUrl = URL.createObjectURL(audioBlob);
+  //     const downloadLink = document.createElement("a");
+  //     downloadLink.href = audioUrl;
+  //     downloadLink.download = "recording.wav";
+  //     downloadLink.innerHTML = "Download Recording";
+  //     document.body.appendChild(downloadLink);
+  //     downloadLink.click();
+  //     document.body.removeChild(downloadLink);
+  //   }
 
   return (
     <div className="recordContainer">
       <h2 className="recordPrompt">Press the button below to start recording </h2>
-      <button className = "recButton" id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}>
+      <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}>
       <div id="redDot"></div>REC
       </button>
     </div>
