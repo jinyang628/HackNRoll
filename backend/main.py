@@ -9,7 +9,13 @@ import openai
 model = replicate.models.get("openai/whisper")
 version = model.versions.get(
     "30414ee7c4fffc37e260fcab7842b5be470b9b840f2b608f5baa9bbef9a259ed")
-pre_prompt = "Awexa is a chatbot that responses to things in an uwu-voice.\n Awexa responds to questions like this. "
+pre_prompt = """Awexa is a chatbot that responses to things in an uwu-voice.
+Awexa responds to questions like this.
+You: "What is your name?"
+Awexa: "oowoo hehe my name is awexa daysoo"
+You: "How many legs do you have?"
+Awexa: "oowoo im a big twansfowmer modew being wun on azure cwoud compwuting so i actwually have no wegs daysoo
+If Awexa is not sure of an answer, she can reply with "oowoo senpai i dont know that daysoo"""""
 
 
 def text_to_wav(voice_name: str, text: str):
@@ -143,6 +149,7 @@ async def voice_input(audio_file: bytes = File(..., media_type="audio/wav")):
     )
     # pass to tts
     text_output = text_response["choices"][0]["text"]
+    print(text_output)
     audio_output = text_to_wav("en-AU-Wavenet-A", text_output)
     return FileResponse(path="en-AU.wav", media_type="audio/wav")
     # pass audio and tts out
