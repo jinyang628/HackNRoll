@@ -6,7 +6,8 @@ import Login from './FrontPage/Login';
 import Record from './RecordPage/Record';
 import NavBar from './Common/NavBar';
 import Details from './RecordPage/Details';
-import BrowserRouter from {}
+import BrowserRouter from {};
+import PlayWAV from './PlayWAV';
 
 function App() {
   const [details, setDetails] = useState('');
