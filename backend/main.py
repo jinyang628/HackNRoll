@@ -13,7 +13,7 @@ cursor.execute("""
 CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY,
     username TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     details TEXT 
 )
@@ -41,12 +41,17 @@ async def login(email: str, password: str):
 # API endpoint for user registration
 @app.post("/register")
 async def register(user: User):
-    cursor.execute("INSERT INTO users (username, email, password,details) VALUES (?, ?, ?,?)", (user.username, user.email, user.password,user.details))
-    conn.commit()
-    return {"user_id": cursor.lastrowid}
+    cursor.execute("SELECT email FROM users WHERE email = ?", (user.email,))
+    email_exists = cursor.fetchone()
+    if not email_exists:
+        cursor.execute("INSERT INTO users (username, email, password,details) VALUES (?, ?, ?,?)", (user.username, user.email, user.password,user.details))
+        conn.commit()
+        return {"user_id": cursor.lastrowid}
+    else:
+        raise HTTPException(status_code=400, detail="Email already exists")
 
 # API endpoint for editing user details
-@app.post("/edit_details/{user_id}")
+@app.post("/edit_details")
 async def edit_details(user_id: int, details: str):
     cursor.execute("UPDATE users SET details = ? WHERE user_id = ?", (details, user_id))
     conn.commit()
