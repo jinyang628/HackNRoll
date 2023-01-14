@@ -8,10 +8,11 @@ function Record() {
   };
 
   return (
-    <h2 className="recordPrompt">Press the button below to start recording
-    <button id="record-button">Start Recording</button>
-    <audio id="recorded-audio"></audio>
-    </h2>
+    <div>
+      <h2 className="recordPrompt">Press the button below to start recording</h2>
+      <button id="record-button">Start Recording</button>
+      <audio id="recorded-audio"></audio>
+    </div>
   );
 }
 
