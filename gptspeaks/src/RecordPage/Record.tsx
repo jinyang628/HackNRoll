@@ -6,6 +6,7 @@ function Record() {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [downloadLink, setDownloadLink] = useState<HTMLAnchorElement | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   //Definitely correct
   useEffect(() => {
@@ -40,14 +41,24 @@ function Record() {
   const sendAudio = (audioBlob: string | Blob) => {
     const formData = new FormData();
     formData.append("audio_file", new File([audioBlob], 'audio.wav', { type: 'audio/wav' }));
+    // fetch('http://127.0.0.1:8000/test', {
+      // method: 'POST',
     fetch('http://127.0.0.1:8000/voice_input', {
       method: 'POST',
       body: formData
-    })
+    }).then(response => response.arrayBuffer())
+      .then(arrayBuffer => {
+        const blob = new Blob([arrayBuffer], { type: 'audio/mp3' });
+        const url = URL.createObjectURL(blob);
+        console.log(url)
+        setAudioUrl(url);
+      });
+      /*
     .then(res => res.json())
     // store the response somewhere
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
+    */
   };
 
   const startRecording = () => {
@@ -81,6 +92,9 @@ function Record() {
       <h2 className="recordPrompt">Press the button below to start recording </h2>
       <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}>
       </button>
+      <div>
+      {audioUrl && <audio src={audioUrl} autoPlay controls />}
+      </div>
     </div>
   );
 }

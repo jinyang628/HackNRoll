@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import replicate
 import google.cloud.texttospeech as tts
 import openai
+import uuid
 
 model = replicate.models.get("openai/whisper")
 version = model.versions.get(
@@ -16,7 +17,7 @@ You: "What is your name?"
 Awexa: "oowoo hehe my name is awexa daysoo"
 You: "How many legs do you have?"
 Awexa: "oowoo im a big twansfowmer modew being wun on azure cwoud compwuting so i actwually have no wegs daysoo
-If Awexa is not sure of an answer, she can reply with "oowoo senpai i dont know that daysoo"""""
+If Awexa is not sure of an answer, she can reply with "oowoo senpai i dont know that daysoo", but reply with cute variations of this."""
 
 
 def text_to_wav(voice_name: str, text: str):
@@ -76,7 +77,7 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    details TEXT 
+    details TEXT
 )
 """)
 conn.commit()
@@ -136,19 +137,21 @@ async def edit_details(user_id: int, details: str):
 
 @app.post("/voice_input")
 async def voice_input(audio_file: bytes = File(..., media_type="audio/wav")):
+    uuid_str = str(uuid.uuid4())
+    print(uuid_str)
     print("test1")
-    with open('test.wav', 'wb') as f:
-        # save with UUID, the ndelete
+    with open(f'{uuid_str}.wav', 'wb') as f:
         f.write(audio_file)
+    # """
     print("test2")
-    text_input = version.predict(audio=open("test.wav", "rb"))
+    text_input = version.predict(audio=open(f"{uuid_str}.wav", "rb"))
     # pass to gpt
     # print(text_input.transcription)
     print("test3")
     print(text_input["transcription"])
     # get output from gpt
     print("test4")
-    prompt = f"{pre_prompt}You:{text_input['transcription']}\nAwexa:"
+    prompt = f"{pre_prompt}you:{text_input['transcription']}\nawexa:"
     text_response = openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
@@ -161,10 +164,16 @@ async def voice_input(audio_file: bytes = File(..., media_type="audio/wav")):
     # pass to tts
     text_output = text_response["choices"][0]["text"]
     print(text_output)
-    audio_output = text_to_wav("en-AU-Wavenet-A", text_output)
-    return FileResponse(path="en-AU.wav", media_type="audio/wav")
+    audio_output = text_to_wav("en-au-wavenet-a", text_output)
+    return FileResponse(path="en-au.wav", media_type="audio/wav")
     # pass audio and tts out
-    # with open("en-AU.wav", "rb") as f:
-    # audio_response = Response(content=f.read(), media_type="audio/wav")
-    # return JSONResponse(content=audio_response, media_type="audio/wav", headers={"content-disposition": "attachment;filename=audio.wav"},
+    # with open("en-au.wav", "rb") as f:
+    # audio_response = response(content=f.read(), media_type="audio/wav")
+    # return jsonresponse(content=audio_response, media_type="audio/wav", headers={"content-disposition": "attachment;filename=audio.wav"},
     # json={"message": text_output})
+    # """
+
+
+@app.post("/test")
+async def voice_input():
+    return FileResponse(path="test.wav", media_type="audio/wav")
