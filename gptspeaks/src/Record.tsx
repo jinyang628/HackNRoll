@@ -5,8 +5,8 @@ function Record() {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [fileName, setFileName] = useState("recording.wav");
+  // const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  // const [fileName, setFileName] = useState("recording.wav");
 
   useEffect(() => {
     if (isRecording) {
@@ -42,7 +42,7 @@ function Record() {
       setMediaRecorder(mediaRecorder);
       mediaRecorder.start();
       mediaRecorder.addEventListener("dataavailable", event => {
-        setAudioChunks(prev => [...prev, event.data]);
+        setAudioChunks([event.data]);
       });
     });
   }
