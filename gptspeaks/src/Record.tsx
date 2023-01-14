@@ -1,18 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react';
+
 
 function Record() {
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-    // Perform login or registration logic here
-    // ...
-  };
+  const [isRecording, setIsRecording] = useState(false);
+
+  const handleClick = () => {
+    setIsRecording(!isRecording);
+    console.log(`Recording: ${isRecording}`);
+  }
 
   return (
-    <h2 className="recordPrompt">Press the button below to start recording
-    <button id="record-button">Start Recording</button>
-    <audio id="recorded-audio"></audio>
-    </h2>
+    <div className="recordContainer">
+      <h2 className="recordPrompt">Press the button below to start recording </h2>
+      <button id="record-button" onClick={handleClick}>
+        {isRecording ? 'Stop' : 'Start'}
+      </button>
+      <audio id="recorded-audio"></audio>
+    </div>
+    
   );
 }
+
 
 export default Record
