@@ -1,10 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import "./style.css";
-import Title from './Title';
-import Login from './Login';
-import Record from './Record';
-import NavBar from './NavBar';
+import Title from './FrontPage/Title';
+import Login from './FrontPage/Login';
+import Record from './RecordPage/Record';
+import NavBar from './Common/NavBar';
 
 function App() {
   return (

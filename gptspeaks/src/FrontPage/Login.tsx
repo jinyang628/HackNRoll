@@ -24,7 +24,7 @@ function Login() {
       .then(res => res.json())
       // store the response using useState
       .then(response => setData(response))
-      // .then(response => console.log('Success:', JSON.stringify(response)))
+      .then(response => console.log('Success:', JSON.stringify(response)))
       .catch(error => console.error('Error:', error));
     }, []);
   };
