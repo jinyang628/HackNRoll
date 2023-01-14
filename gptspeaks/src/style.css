@@ -1,4 +1,38 @@
-.Title{
-    margin-top: 2550px;
+body {
+    background: linear-gradient(to right, blue, red);
+  }
+
+.frontPageContent{
+    margin-top: 50px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.introductoryPrompt{
+    text-align: center;
+}
+
+.line1{
+    transform: translateX(-25%);
+}
+
+.line3{
+    font-size: 50px;
+    font-weight: bold;
+    transform: translateX(50%);
+}
+
+.recordPrompt{
+    margin-top: 100px;
+    color: grey;
+    text-align: center;
+}
+
+.regLogForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
