@@ -5,7 +5,8 @@ function Record() {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [fileName, setFileName] = useState("recording.wav");
 
   useEffect(() => {
     if (isRecording) {
@@ -55,6 +56,14 @@ function Record() {
       setAudioChunks([]);
       setStream(null);
       setMediaRecorder(null);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = audioUrl;
+      downloadLink.download = "recording.wav";
+      downloadLink.innerHTML = "Download Recording";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
     }
   }
 
