@@ -53,3 +53,7 @@ body {
 #record-button:hover {
     background-color: darkred;
 }
+
+.logo{
+    width: 40px;
+}
