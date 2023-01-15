@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(to right, rgb(255, 255, 255), rgb(141, 141, 141));
+    background: linear-gradient(to right, grey, black);
   }
 
 .frontPageContent{
@@ -14,14 +14,24 @@ body {
     text-align: center;
 }
 
+.Title{
+    color: white;
+}
+
 .line1{
     transform: translateX(-25%);
+    color: white;
+}
+
+.line2{
+    color: white;
 }
 
 .line3{
     font-size: 50px;
     font-weight: bold;
     transform: translateX(10%);
+    color: white;
 }
 
 .recordPrompt{
@@ -49,9 +59,10 @@ body {
 }
 
 .recordContainer{
-    display: flex; /* make the container a flex container */
-    flex-direction: column; /* align the elements in a column */
+    display: flex;
+    align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 #record-button-false{

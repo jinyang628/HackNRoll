@@ -108,12 +108,12 @@ function Record() {
   // };
 
   return (
-    <div className="recordContainer">
+    <div>
       <ReactMediaRecorder
         audio
         render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
         // render={({ status, mediaBlobUrl }) => (
-          <div>
+          <div className="recordContainer">
             <p>{status}</p>
             <button onClick={startRecording}>Start Recording</button>
             <button onClick={stopRecording}>Stop Recording</button>

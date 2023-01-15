@@ -12,7 +12,6 @@ import Details from '../DeatilsPage/Details';
 function LoginContent(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
 
   const handleSubmit1 = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -67,7 +66,6 @@ function LoginContent(props: any) {
             <a className="Link">Don't have an account? Click here to register</a>
           </Link>
       </form>
-      <Record/>
       </div>
     
   );
