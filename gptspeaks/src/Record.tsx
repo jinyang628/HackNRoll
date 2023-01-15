@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ReactMediaRecorder } from "react-media-recorder";
+import NavBar from "./Common/NavBar";
 
 function Record() {
   const [isRecording, setIsRecording] = useState<boolean | null>(null);
@@ -109,6 +110,8 @@ function Record() {
 
   return (
     <div>
+    <NavBar/>
+    <div>
       <ReactMediaRecorder
         audio
         render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
@@ -137,6 +140,7 @@ function Record() {
       {/* <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}> */}
       {/* <div id="redDot"></div> REC */}
       {/* </button> */}
+    </div>
     </div>
   );
 }

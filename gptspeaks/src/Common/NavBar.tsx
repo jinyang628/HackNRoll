@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from '../Images/YongNingFace.jpg'
+import { Link } from 'react-router-dom';
 
 function NavBar() {
   return (
@@ -12,7 +13,10 @@ function NavBar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-            <a className="nav-link active" aria-current="page" href="#">Home</a>
+            <Link to="/details.html">Details</Link>
+            </li>
+            <li className="nav-item">
+            <Link to="/">Log out</Link>
             </li>
             <li className="nav-item">
             <a className="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Click here for a very cool second webpage</a>

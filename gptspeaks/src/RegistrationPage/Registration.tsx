@@ -47,7 +47,7 @@ function Registration() {
       </label>
       <br />
 
-        <Link to="/login.html">
+        <Link to="/">
           {/* <button className="btn btn-secondary button" onClick={handleSubmit1}>Register</button> */}
           <button className="btn btn-secondary button">Register</button>
           {/* the onClick function kinda spoils the navigation. I cant seem to call handleSubmit and navigate to the details.html at the same time */}

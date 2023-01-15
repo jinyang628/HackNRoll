@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import { BrowserRouter, Link, Route, useNavigate} from 'react-router-dom';
 import Registration from '../RegistrationPage/Registration';
 import { Routes } from 'react-router';
@@ -38,7 +37,6 @@ function LoginContent(props: any) {
 
   return (
       <div>
-      <NavBar/>
       <Title/>
       <form className="logForm">
         <label>
