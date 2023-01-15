@@ -37,37 +37,11 @@ function LoginContent(props: any) {
     .catch(error => console.error('Error:', error));
   };
 
-  const handleSubmit2 = (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-
-    const data = {
-      "username": username,
-      "email": email,
-      "details":"",
-      "password": password,
-    };
-
-    fetch('http://127.0.0.1:8000/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    // store the response somewhere
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error));
-  };
-
   return (
       <div>
       <NavBar/>
       <Title/>
-      <form className="regLogForm">
-        <label>
-          Username:
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </label>
-        <br />
+      <form className="logForm">
         <label>
           Email:
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -78,11 +52,10 @@ function LoginContent(props: any) {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
         <br />
-        <div>
 
           <Link to="/details.html">
-            <button className="btn btn-secondary button" onClick={handleSubmit1}>Log in</button>
-            {/* <button className="btn btn-secondary button">Log in</button> */}
+            {/* <button className="btn btn-secondary button" onClick={handleSubmit1}>Log in</button> */}
+            <button className="btn btn-secondary button">Log in</button>
             {/* the onClick function kinda spoils the navigation. I cant seem to call handleSubmit and navigate to the details.html at the same time */}
             {/* u guys can uncomment the one without onClick to navigate to details.html */}
             {/* i read online it has to do with the useNavigate method of react-router-dom*/}
@@ -91,10 +64,8 @@ function LoginContent(props: any) {
           </Link>
 
           <Link to="/registration.html">
-            <button className="btn btn-secondary button">Register</button>
+            <a className="Link">Don't have an account? Click here to register</a>
           </Link>
-          
-        </div>
       </form>
       <Record/>
       </div>
@@ -119,6 +90,7 @@ function Login(){
               <Route path="/" element={<LoginContent navigate={useNavigate} changeDetails={changeDetails}/>}/>
               <Route path="/details.html" element={<Details changeDetails={changeDetails} getDetails={getDetails}/>}/>
               <Route path="/registration.html" element={<Registration/>}/>
+              <Route path="/record.html" element={<Record/>}/>
           </Routes>
       </BrowserRouter>
     );
