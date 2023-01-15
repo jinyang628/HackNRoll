@@ -88,6 +88,7 @@ function Record() {
     <div className="recordContainer">
       <h2 className="recordPrompt">Press the button below to start recording </h2>
       <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}>
+      <div id="redDot"></div> REC
       </button>
     </div>
   );
