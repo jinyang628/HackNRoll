@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ReactMediaRecorder } from "react-media-recorder";
 
 function Record() {
   const [isRecording, setIsRecording] = useState<boolean | null>(null);
@@ -6,7 +7,8 @@ function Record() {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [downloadLink, setDownloadLink] = useState<HTMLAnchorElement | null>(null);
-
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  //const [blob, setBlob] = useState<Blob|null>(null);
   useEffect(() => {
     if (isRecording !== null){
       if (isRecording) {
@@ -37,15 +39,28 @@ function Record() {
   const sendAudio = (audioBlob: string | Blob) => {
     const formData = new FormData();
     formData.append("audio_file", new File([audioBlob], 'audio.wav', { type: 'audio/wav' }));
+    /*
+    fetch('http://127.0.0.1:8000/test', {
+      method: 'POST',
+      */
     fetch('http://127.0.0.1:8000/voice_input', {
       method: 'POST',
       body: formData
-    })
+    }).then(response => response.arrayBuffer())
+      .then(arrayBuffer => {
+        const blob = new Blob([arrayBuffer], { type: 'audio/mp3' });
+        const url = URL.createObjectURL(blob);
+        console.log(url)
+        setAudioUrl(url);
+      });
+    /*
     .then(res => res.json())
     // store the response somewhere
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
+    */
   };
+
 
   console.log('error arrives here');
   console.log(audioChunks);
@@ -84,11 +99,40 @@ function Record() {
     }
   }
 
+  // const handleAudioEnded = () => {
+    // const audio = document.querySelector("audio");
+    // if(audio){
+      // if(audio.parentNode)
+        // audio.parentNode.removeChild(audio);
+    // }
+  // };
+
   return (
     <div className="recordContainer">
-      <h2 className="recordPrompt">Press the button below to start recording </h2>
-      <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}>
-      </button>
+      <ReactMediaRecorder
+        audio
+        render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
+        // render={({ status, mediaBlobUrl }) => (
+          <div>
+            <p>{status}</p>
+            <button onClick={startRecording}>Start Recording</button>
+            <button onClick={stopRecording}>Stop Recording</button>
+            {/* <button >Start Recording</button> */}
+            {/* <button >Stop Recording</button> */}
+            <audio src={mediaBlobUrl} controls autoPlay loop />
+          </div>
+        )}
+        onStop = {(blobUrl: string, blobObject: Blob) => {
+          console.log("stopped here!");
+          sendAudio(blobObject);
+        }}
+      />
+      {/* <h2 className="recordPrompt">Press the button below to start recording </h2> */}
+      {/* <button id={isRecording ? "record-button-true" : "record-button-false"} onClick={handleClick}> */}
+      {/* </button> */}
+      <div>
+      {audioUrl && <audio src={audioUrl} autoPlay controls/>}
+      </div>
     </div>
   );
 }
